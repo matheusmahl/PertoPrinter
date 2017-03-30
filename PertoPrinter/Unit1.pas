@@ -23,7 +23,7 @@ type
   PrinterInfoStruct = record
     printer_model: integer;   //*!< printer model */
     tipo: Integer ;           //*!< printer type */
-    rom_version: String[12];      //*!< printer version */
+    rom_version: array[0..12] of Byte;      //*!< printer version */
   end;
 
 
@@ -134,24 +134,24 @@ const
   PTR_PROT_ESCPOS = 101; //       /*!< ESC/POS protocol */
 
   //*! Return codes */
-  PTR_OK             =      1 ;//  /*!< success */
-  PTR_ERROR           =    -1 ;//  /*!< error */
-  PTR_ERR_UNSUPPORTED   =  -2   ;//*!< not supported */
-  PTR_ERR_INVALIDPARAM   = -3   ;//*!< invalid parameter */
-  PTR_ERR_NOTOPENED   =    -4   ;//*!< communication not opened */
-  PTR_ERR_DETACHED    =    -5   ;//*!< communication closed */
-  PTR_ERR_NOMEM       =    -6   ;//*!< memory not available */
-  PTR_ERR_NOTIMPL     =    -7   ;//*!< not implemented */
-  PTR_ERR_PROTNOTDEF  =    -8   ;//*!< protocol not defined */
-  PTR_ERR_USB_OPEN    =    -9   ;//*!< error opening USB device */
-  PTR_ERR_USB_CONFIG  =    -10  ;//*!< error setting USB configuration */
-  PTR_ERR_USB_CLAIM   =    -11  ;//*!< error claiming USB interface */
-  PTR_ERR_USB_RELEASE =    -12  ;//*!< error releasing USB interface */
-  PTR_ERR_USB_CLOSE   =    -13  ;//*!< error closing USB handle */
-  PTR_ERR_NOPRESENCE  =    -14  ;//*!< error printer not presence */
+  PTR_OK               =     1   ;//*!< success */
+  PTR_ERROR            =    -1   ;//*!< error */
+  PTR_ERR_UNSUPPORTED  =    -2   ;//*!< not supported */
+  PTR_ERR_INVALIDPARAM =    -3   ;//*!< invalid parameter */
+  PTR_ERR_NOTOPENED    =    -4   ;//*!< communication not opened */
+  PTR_ERR_DETACHED     =    -5   ;//*!< communication closed */
+  PTR_ERR_NOMEM        =    -6   ;//*!< memory not available */
+  PTR_ERR_NOTIMPL      =    -7   ;//*!< not implemented */
+  PTR_ERR_PROTNOTDEF   =    -8   ;//*!< protocol not defined */
+  PTR_ERR_USB_OPEN     =    -9   ;//*!< error opening USB device */
+  PTR_ERR_USB_CONFIG   =    -10  ;//*!< error setting USB configuration */
+  PTR_ERR_USB_CLAIM    =    -11  ;//*!< error claiming USB interface */
+  PTR_ERR_USB_RELEASE  =    -12  ;//*!< error releasing USB interface */
+  PTR_ERR_USB_CLOSE    =    -13  ;//*!< error closing USB handle */
+  PTR_ERR_NOPRESENCE   =    -14  ;//*!< error printer not presence */
   PTR_ERR_PORTNOTFOUND =    -15  ;//*!< error port not found */
-  PTR_ERR_IOERROR      =   -16  ;//*!< error I/O */
-  PTR_ERR_NORESOURCES	 =	-17  ;//*!< error no resources */
+  PTR_ERR_IOERROR      =    -16  ;//*!< error I/O */
+  PTR_ERR_NORESOURCES	 =	  -17  ;//*!< error no resources */
 
   //*! Printer status bits (GetPrinterStatus) */
   PTR_ST_OK                   =    0; //     0       /*!< operational */
@@ -494,13 +494,15 @@ procedure TForm1.Button10Click(Sender: TObject);
 var
   iRetorno: Integer;
   PrinterInfoType: PrinterInfoStruct;
+  sPrinterVersion: String;
 begin
   iRetorno := GetPrinterInfo(PrinterInfoType);
   memo1.Lines.Add('GetPrinterInfo - Retorno:' + IntToStr(iRetorno));
 
   memo1.Lines.Add('Printer model: ' + IntToStr(PrinterInfoType.printer_model));
   memo1.Lines.Add('Printer type: ' + IntToStr(PrinterInfoType.tipo));
-  memo1.Lines.Add('Printer version: ' + PrinterInfoType.rom_version);
+  SetString(sPrinterVersion, PansiChar(@PrinterInfoType.rom_version[0]), Length(PrinterInfoType.rom_version));
+  memo1.Lines.Add('Printer version: ' + sPrinterVersion);
 end;
 
 
