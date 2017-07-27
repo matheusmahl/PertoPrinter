@@ -34,6 +34,7 @@ type
   PGetDrawerStatus = function(drawer_id: integer; var status: integer): Integer; Cdecl;
   PSendData = function(const data: String; size: Integer): Integer; Cdecl;
   PMakePrint = function(): Integer; Cdecl;
+  PGetRealTimeStatus = function(tipo: Integer; var status: integer; time: Integer): Integer; Cdecl;
 
   PMakeCut = function(tipo: Integer): Integer; Cdecl;
   PMakeCutnLines = function(tipo, linhas: Integer): Integer; Cdecl;
@@ -77,6 +78,8 @@ type
     rdbCOM: TRadioButton;
     edtPortaCOM: TEdit;
     Button11: TButton;
+    btnRealTimeStatus: TButton;
+    btnLimparMemo: TButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -88,6 +91,8 @@ type
     procedure Button9Click(Sender: TObject);
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
+    procedure btnRealTimeStatusClick(Sender: TObject);
+    procedure btnLimparMemoClick(Sender: TObject);
   private
     procedure CarregaECF;
     { Private declarations }
@@ -123,7 +128,7 @@ var
   GetPartialLineFeed: PGetPartialLineFeed;
   GetPrinterInfo: PGetPrinterInfo;
   ClosePort: PClosePort;
-
+  GetRealTimeStatus: PGetRealTimeStatus;
 
 implementation
 
@@ -312,7 +317,8 @@ begin
   @GetPartialLineFeed := GetProcAddress(HandleDLL, 'GetPartialLineFeed');
   @GetPrinterInfo := GetProcAddress(HandleDLL, 'GetPrinterInfo');
   @ClosePort := GetProcAddress(HandleDLL, 'ClosePort');
-
+  @GetRealTimeStatus := GetProcAddress(HandleDLL, 'GetRealTimeStatus');
+  
   memo1.Clear;
 end;
 
@@ -513,6 +519,24 @@ var
 begin
   iRetorno := ClosePort;
   memo1.Lines.Add('ClosePort - Retorno:' + IntToStr(iRetorno));
+end;
+
+
+
+procedure TForm1.btnRealTimeStatusClick(Sender: TObject);
+var
+  iRetorno: Integer;
+  iStatus: integer;
+begin
+  iRetorno := GetRealTimeStatus(4, iStatus, 0);
+  memo1.Lines.Add('GetRealTimeStatus - Retorno:' + IntToStr(iRetorno) + ' Status: ' + IntToStr(iStatus));
+end;
+
+
+
+procedure TForm1.btnLimparMemoClick(Sender: TObject);
+begin
+  memo1.Clear;
 end;
 
 end.

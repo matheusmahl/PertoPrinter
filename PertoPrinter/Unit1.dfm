@@ -151,4 +151,22 @@ object Form1: TForm1
     TabOrder = 14
     OnClick = Button11Click
   end
+  object btnRealTimeStatus: TButton
+    Left = 104
+    Top = 112
+    Width = 89
+    Height = 25
+    Caption = 'RealTime Status'
+    TabOrder = 15
+    OnClick = btnRealTimeStatusClick
+  end
+  object btnLimparMemo: TButton
+    Left = 496
+    Top = 504
+    Width = 75
+    Height = 25
+    Caption = 'Limpar Memo'
+    TabOrder = 16
+    OnClick = btnLimparMemoClick
+  end
 end
